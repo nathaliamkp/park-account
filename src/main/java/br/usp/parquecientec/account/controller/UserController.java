@@ -2,7 +2,6 @@ package br.usp.parquecientec.account.controller;
 
 import br.usp.parquecientec.account.model.User;
 import br.usp.parquecientec.account.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,33 +13,47 @@ import java.util.Optional;
 @RequestMapping(path = "/api/account/v1")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @PostMapping(path = "/user")
-    public  @ResponseBody User createUser(@RequestBody User user){
-        User savedUser = userRepository.save(user);
-        return savedUser;
+    public @ResponseBody
+    User createUser(@RequestBody User user) {
+        return userRepository.save(user);
 
     }
 
     @GetMapping(path = "/user")
-    public  @ResponseBody
-    Iterable<User> listUser(){
-        Iterable<User> all = userRepository.findAll();
-        return all;
+    public @ResponseBody
+    Iterable<User> listUser() {
+        return userRepository.findAll();
     }
 
     @PutMapping(path = "/user/{userCode}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer userCode, @RequestBody User user) throws Exception {
+    public ResponseEntity<User> updateUser(@PathVariable Integer userCode, @RequestBody User user) {
         Optional<User> userOptional = userRepository.findById(userCode);
         if (userOptional.isPresent()) {
             User savedUser = userOptional.get();
             savedUser.setFirstName(user.getFirstName());
             userRepository.save(savedUser);
-            return new ResponseEntity(savedUser, HttpStatus.OK);
+            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/user/{userCode}")
+    public ResponseEntity<User> getUser(@PathVariable Integer userCode) {
+        Optional<User> userOptional = userRepository.findById(userCode);
+        if (userOptional.isPresent()) {
+            User getUser = userOptional.get();
+            return new ResponseEntity<>(getUser, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
+
