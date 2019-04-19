@@ -2,6 +2,8 @@ package br.usp.parquecientec.account.controller;
 
 import br.usp.parquecientec.account.model.User;
 import br.usp.parquecientec.account.repository.UserRepository;
+import br.usp.parquecientec.account.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,21 +11,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
+
 @Controller
 @RequestMapping(path = "/api/account/v1")
 public class UserController {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     @PostMapping(path = "/user")
     public @ResponseBody
     User createUser(@RequestBody User user) {
-        return userRepository.save(user);
-
+        return userServiceImpl.save(user);
     }
 
     @GetMapping(path = "/user")
@@ -34,15 +37,11 @@ public class UserController {
 
     @PutMapping(path = "/user/{userCode}")
     public ResponseEntity<User> updateUser(@PathVariable Integer userCode, @RequestBody User user) {
-        Optional<User> userOptional = userRepository.findById(userCode);
-        if (userOptional.isPresent()) {
-            User savedUser = userOptional.get();
-            savedUser.setFirstName(user.getFirstName());
-            userRepository.save(savedUser);
-            return new ResponseEntity<>(savedUser, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User updatedUser = userServiceImpl.update(userCode, user);
+        if(nonNull(updatedUser)){
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(path = "/user/{userCode}")
