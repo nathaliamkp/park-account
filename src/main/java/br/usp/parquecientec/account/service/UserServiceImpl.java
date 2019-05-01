@@ -42,26 +42,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Integer userCode) {
-//        Optional<User> userOptional = userRepository.findById(userCode);
-//        if (userOptional.isPresent()) {
-//            User getUser = userOptional.get();
-//
-//            return getUser()
-//        }else {
-            return null;
-//        }
-    }
+        Optional<User> userOptional = userRepository.findById(userCode);
+        return userOptional.orElse(null);
 
+    }
 
     @Override
     public User delete(Integer userCode) {
         Optional<User> userOptional = userRepository.findById(userCode);
+        if (userOptional.isPresent()) {
+            User deleteUser = userOptional.get();
+            userRepository.delete(deleteUser);
+            return deleteUser;
+        } else {
+            return null;
+        }
 
-        User deleteUser = userOptional.get();
-        userRepository.delete(deleteUser);
-
-
-        return deleteUser;
     }
-
 }
