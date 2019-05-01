@@ -37,7 +37,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> list() {
-        throw new UnsupportedOperationException();
+        final List<User> all = (List<User>) userRepository.findAll();
+        return all;
     }
 
     @Override

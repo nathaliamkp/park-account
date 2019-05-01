@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping(path = "/user")
     public @ResponseBody
     Iterable<User> listUser() {
-        return userRepository.findAll();
+        return userServiceImpl.list();
     }
 
     @PutMapping(path = "/user/{userCode}")
