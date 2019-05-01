@@ -14,5 +14,5 @@ public interface UserService {
 
     User getUser(Integer userCode);
 
-    void delete(Integer userCode);
+    User delete(Integer userCode);
 }

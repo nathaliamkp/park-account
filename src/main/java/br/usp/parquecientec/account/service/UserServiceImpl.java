@@ -42,11 +42,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Integer userCode) {
-        throw new UnsupportedOperationException();
+//        Optional<User> userOptional = userRepository.findById(userCode);
+//        if (userOptional.isPresent()) {
+//            User getUser = userOptional.get();
+//
+//            return getUser()
+//        }else {
+            return null;
+//        }
     }
 
+
     @Override
-    public void delete(Integer userCode) {
-        throw new UnsupportedOperationException();
+    public User delete(Integer userCode) {
+        Optional<User> userOptional = userRepository.findById(userCode);
+
+        User deleteUser = userOptional.get();
+        userRepository.delete(deleteUser);
+
+
+        return deleteUser;
     }
+
 }

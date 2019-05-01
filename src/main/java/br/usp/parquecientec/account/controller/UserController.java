@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -38,7 +37,7 @@ public class UserController {
     @PutMapping(path = "/user/{userCode}")
     public ResponseEntity<User> updateUser(@PathVariable Integer userCode, @RequestBody User user) {
         User updatedUser = userServiceImpl.update(userCode, user);
-        if(nonNull(updatedUser)){
+        if (nonNull(updatedUser)) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,13 +45,25 @@ public class UserController {
 
     @GetMapping(path = "/user/{userCode}")
     public ResponseEntity<User> getUser(@PathVariable Integer userCode) {
-        Optional<User> userOptional = userRepository.findById(userCode);
-        if (userOptional.isPresent()) {
-            User getUser = userOptional.get();
+        User getUser = userServiceImpl.getUser(userCode);
+        if (nonNull(getUser)) {
             return new ResponseEntity<>(getUser, HttpStatus.OK);
+
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @DeleteMapping(path = "/user/{userCode}")
+    public ResponseEntity<User> delete(@PathVariable Integer userCode) {
+        User delete = userServiceImpl.delete(userCode);
+        if (nonNull(delete)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 }
+
 
