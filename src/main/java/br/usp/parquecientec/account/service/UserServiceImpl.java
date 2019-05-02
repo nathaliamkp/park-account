@@ -2,7 +2,9 @@ package br.usp.parquecientec.account.service;
 
 import br.usp.parquecientec.account.model.User;
 import br.usp.parquecientec.account.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +23,8 @@ public class UserServiceImpl implements UserService {
     public User update(Integer userCode, User user) {
         Optional<User> userOptional = userRepository.findById(userCode);
         if (userOptional.isPresent()) {
-            User savedUser = userOptional.get();
-            savedUser.setFirstName(user.getFirstName());
-            userRepository.save(savedUser);
-            return savedUser;
+            user.setCode(userCode);
+            return userRepository.save(user);
         } else {
             return null;
         }
