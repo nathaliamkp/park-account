@@ -1,11 +1,7 @@
 package br.usp.parquecientec.account.service;
-
 import br.usp.parquecientec.account.model.User;
 import br.usp.parquecientec.account.repository.UserRepository;
-
 import org.springframework.stereotype.Service;
-
-
 import java.util.List;
 import java.util.Optional;
 
