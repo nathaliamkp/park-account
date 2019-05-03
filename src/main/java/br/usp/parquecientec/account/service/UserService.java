@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface UserService {
 
-    User update(Integer userCode, User user);
+    User update(Integer userCode, User user) throws Exception;
 
-    User save(User user);
+    User save(User user) throws Exception;
 
     List<User> list();
 

@@ -1,6 +1,7 @@
 package br.usp.parquecientec.account.service;
 import br.usp.parquecientec.account.model.User;
 import br.usp.parquecientec.account.repository.UserRepository;
+import br.usp.parquecientec.account.util.UserValidation;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +17,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User update(Integer userCode, User user) {
+    public User update(Integer userCode, User user) throws Exception {
         Optional<User> userOptional = userRepository.findById(userCode);
         if (userOptional.isPresent()) {
             user.setCode(userCode);
+            UserValidation userValidation = new UserValidation();
+            userValidation.validate(user);
             return userRepository.save(user);
         } else {
             return null;
@@ -27,7 +30,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
+    public User save(User user) throws Exception {
+        UserValidation userValidation = new UserValidation();
+        userValidation.validate(user);
         return userRepository.save(user);
     }
 
