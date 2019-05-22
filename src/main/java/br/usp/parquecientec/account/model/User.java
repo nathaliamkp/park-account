@@ -84,5 +84,17 @@ public class User {
         this.code = code;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "code=" + code +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", documentCode='" + documentCode + '\'' +
+                ", documentType='" + documentType + '\'' +
+                ", businessRole='" + businessRole + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }
