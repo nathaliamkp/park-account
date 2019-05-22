@@ -9,19 +9,19 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+    private UserValidation userValidation;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserValidation userValidation) {
         this.userRepository = userRepository;
+        this.userValidation = userValidation;
     }
-
 
     @Override
     public User update(Integer userCode, User user) throws Exception {
         Optional<User> userOptional = userRepository.findById(userCode);
         if (userOptional.isPresent()) {
             user.setCode(userCode);
-            UserValidation userValidation = new UserValidation();
             userValidation.validate(user);
             return userRepository.save(user);
         } else {
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) throws Exception {
-        UserValidation userValidation = new UserValidation();
         userValidation.validate(user);
         return userRepository.save(user);
     }

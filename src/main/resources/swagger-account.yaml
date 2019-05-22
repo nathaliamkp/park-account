@@ -1,0 +1,195 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Account Service"
+  description: "This microservice is to be user to management all Employees in Cientec"
+  contact:
+    email: "nah.manso@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "parquecientec.usp.br"
+basePath: "/api/employees/v1"
+schemes:
+- "https"
+- "http"
+paths:
+  /user:
+    post:
+      summary: "Create a User"
+      description: ""
+      operationId: "createUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User to be Created"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        201:
+          description: "Create with success"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Some business error"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: "List an user"
+      operationId: "listUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Create with success"
+          schema:
+            $ref: "#/definitions/Users"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+  '/user/{userId}':
+    put:
+      summary: "Create a User"
+      operationId: "updateUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "User to be Created"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Some business error"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: "Get an user"
+      operationId: "getUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: "Delete an user"
+      operationId: "deleteUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "No Content"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  User:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      documentCode:
+        type: "string"
+      documentType:
+        type: "string"
+      businessRole:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+  Users:
+    type: "array"
+    items:
+      $ref: '#/definitions/User'
+  Error:
+    type: "array"
+    items:
+      type: "object"
+      required: 
+      - code
+      - error
+      properties:
+        code:
+          type: "string"
+        error:
+          type: "string"
